@@ -6,4 +6,7 @@ __pycache__/
 data/raw/*.csv
 data/raw/*.zip
 
-models/*.pkl
+mlruns/
+mlflow.db
+
+#models/*.pkl
