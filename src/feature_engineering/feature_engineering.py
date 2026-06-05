@@ -1,126 +1,95 @@
-from pathlib import Path
 import pandas as pd
 
 
-class FeatureEngineer:
+def create_features(
+    df,
+    date_column,
+    target_column
+):
 
-    def __init__(self, data_path: str):
-        self.data_path = Path(data_path)
+    df = df.copy()
 
-    def load_data(self):
-        """
-        Load master dataset.
-        """
-
-        df = pd.read_csv(
-            self.data_path / "master_dataset.csv"
-        )
-
-        return df
-
-    def create_date_features(self, df):
-        """
-        Create features from date column.
-        """
-
-        df["Date"] = pd.to_datetime(df["Date"])
-
-        df["Year"] = df["Date"].dt.year
-        df["Month"] = df["Date"].dt.month
-        df["Quarter"] = df["Date"].dt.quarter
-        df["Week"] = df["Date"].dt.isocalendar().week
-        df["DayOfWeek"] = df["Date"].dt.dayofweek
-
-        return df
-
-    def create_lag_features(self, df):
-        """
-        Create previous sales features.
-        """
-
-        df = df.sort_values(
-            by=["Store", "Dept", "Date"]
-        )
-
-        df["Lag_1"] = (
-            df.groupby(["Store", "Dept"])["Weekly_Sales"]
-            .shift(1)
-        )
-
-        df["Lag_4"] = (
-            df.groupby(["Store", "Dept"])["Weekly_Sales"]
-            .shift(4)
-        )
-
-        df["Lag_12"] = (
-            df.groupby(["Store", "Dept"])["Weekly_Sales"]
-            .shift(12)
-        )
-
-        return df
-
-    def create_rolling_features(self, df):
-        """
-        Rolling average sales.
-        """
-
-        df["RollingMean_4"] = (
-            df.groupby(["Store", "Dept"])["Weekly_Sales"]
-            .transform(
-                lambda x:
-                x.shift(1).rolling(4).mean()
-            )
-        )
-
-        return df
-
-    def save_data(self, df):
-
-        output_path = (
-            self.data_path /
-            "feature_dataset.csv"
-        )
-
-        df.to_csv(output_path, index=False)
-
-        print(f"\nSaved: {output_path}")
-
-    def run(self):
-
-        df = self.load_data()
-
-        print("Original Shape:")
-        print(df.shape)
-
-        df = self.create_date_features(df)
-
-        df = self.create_lag_features(df)
-
-        df = self.create_rolling_features(df)
-
-        print("\nFinal Shape:")
-        print(df.shape)
-
-        print("\nColumns Added:")
-        print([
-            "Year",
-            "Month",
-            "Quarter",
-            "Week",
-            "DayOfWeek",
-            "Lag_1",
-            "Lag_4",
-            "Lag_12",
-            "RollingMean_4"
-        ])
-
-        self.save_data(df)
-
-
-if __name__ == "__main__":
-
-    engineer = FeatureEngineer(
-        "data/raw"
+    # Convert selected date column
+    df[date_column] = pd.to_datetime(
+        df[date_column],
+        errors="coerce"
     )
 
-    engineer.run()
+    # Convert selected target column
+    df[target_column] = pd.to_numeric(
+        df[target_column],
+        errors="coerce"
+    )
+
+    # Remove invalid rows
+    df = df.dropna(
+        subset=[
+            date_column,
+            target_column
+        ]
+    )
+
+    # Sort chronologically
+    df = df.sort_values(
+        date_column
+    )
+
+    # ======================
+    # Time Features
+    # ======================
+
+    df["Year"] = df[date_column].apply(
+        lambda x: x.year
+    )
+
+    df["Month"] = df[date_column].apply(
+        lambda x: x.month
+    )
+
+    df["Quarter"] = df[date_column].apply(
+        lambda x: x.quarter
+    )
+
+    df["Week"] = df[date_column].apply(
+        lambda x: x.isocalendar().week
+    )
+
+    df["DayOfWeek"] = df[date_column].apply(
+        lambda x: x.dayofweek
+    )
+
+    # ======================
+    # Lag Features
+    # ======================
+
+    df["Lag_1"] = (
+        df[target_column].shift(1)
+    )
+
+    df["Lag_7"] = (
+        df[target_column].shift(7)
+    )
+
+    df["Lag_30"] = (
+        df[target_column].shift(30)
+    )
+
+    # ======================
+    # Rolling Features
+    # ======================
+
+    df["RollingMean_7"] = (
+        df[target_column]
+        .rolling(7)
+        .mean()
+    )
+
+    df["RollingMean_30"] = (
+        df[target_column]
+        .rolling(30)
+        .mean()
+    )
+
+    df = df.dropna()
+
+    return df
