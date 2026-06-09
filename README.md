@@ -1,84 +1,80 @@
 # ForecastIQ
 
-AI-powered forecasting platform capable of forecasting any business metric from historical time-series data.
-
-## Overview
-
-ForecastIQ enables businesses to upload historical datasets and generate future forecasts using machine learning.
-
-Unlike traditional forecasting tools that require predefined schemas, ForecastIQ allows users to select their own date and target columns, making it adaptable across industries such as retail, hospitality, manufacturing, e-commerce, logistics, and finance.
+Enterprise AI Forecasting Platform built using Machine Learning, Time Series Feature Engineering, XGBoost, Streamlit, Docker and Render.
 
 ---
 
-## Features
+## Overview
 
-### Data Upload
+ForecastIQ is an end-to-end forecasting platform that enables users to upload historical business datasets, automatically engineer forecasting features, train machine learning models and generate future forecasts through an interactive dashboard.
 
-* Upload CSV datasets
-* Preview uploaded data
-* Select custom date columns
-* Select custom target columns
+The platform is designed to support a wide range of business forecasting use cases including:
+
+* Sales Forecasting
+* Revenue Forecasting
+* Demand Forecasting
+* Inventory Forecasting
+* Booking Forecasting
+* Operational Forecasting
+
+---
+
+## Key Features
 
 ### Automated Feature Engineering
 
-Automatically creates:
+Automatically creates forecasting features including:
 
 * Year
 * Month
 * Quarter
 * Week
-* Day of Week
+* Day Of Week
 * Lag Features
-* Rolling Averages
+* Rolling Average Features
 
 ### Machine Learning Forecasting
 
-Uses:
-
 * XGBoost Regressor
-* Time-series feature engineering
-* Recursive forecasting
+* Time Series Forecasting
+* Multi-Step Forecast Generation
+* Recursive Forecasting
 
-### Model Evaluation
+### Interactive Dashboard
 
-Displays:
+* CSV Upload
+* Dataset Exploration
+* Forecast Configuration
+* Historical Trend Analysis
+* Model Evaluation
+* Feature Importance Analysis
 
-* MAE (Mean Absolute Error)
-* RMSE (Root Mean Squared Error)
-* Actual vs Predicted Performance
+### Export Functionality
 
-### Visual Analytics
+* Forecast Download
+* CSV Export
 
-Interactive Plotly charts:
+### Deployment Ready
 
-* Historical Trends
-* Future Forecasts
-* Feature Importance
-
-### Export Results
-
-* Download forecast results as CSV
+* Docker Containerisation
+* Render Deployment
+* GitHub Version Control
 
 ---
 
-## Tech Stack
-
-### Frontend
-
-* Streamlit
+## Technology Stack
 
 ### Machine Learning
 
-* XGBoost
-* Scikit-learn
-
-### Data Processing
-
+* Python
 * Pandas
 * NumPy
+* Scikit-Learn
+* XGBoost
 
-### Visualisation
+### Dashboard
 
+* Streamlit
 * Plotly
 
 ### Deployment
@@ -86,74 +82,173 @@ Interactive Plotly charts:
 * Docker
 * Render
 
----
+### Version Control
 
-## Example Use Cases
-
-### Retail
-
-Forecast:
-
-* Sales
-* Revenue
-* Transactions
-
-### Hospitality
-
-Forecast:
-
-* Bookings
-* Occupancy
-* Revenue
-
-### Manufacturing
-
-Forecast:
-
-* Production Volume
-* Demand
-* Inventory Requirements
-
-### E-Commerce
-
-Forecast:
-
-* Orders
-* Revenue
-* Customer Activity
+* Git
+* GitHub
 
 ---
 
-## Project Structure
+## Application Architecture
 
-src/
-
-├── dashboard/
-
-├── feature_engineering/
-
-├── forecasting/
-
-├── training/
-
-└── api/
+```text
+User Uploads Dataset
+           │
+           ▼
+Feature Engineering
+           │
+           ▼
+Model Training
+           │
+           ▼
+Forecast Generation
+           │
+           ▼
+Interactive Dashboard
+           │
+           ▼
+Forecast Export
+```
 
 ---
 
-## Future Roadmap
+## Model Evaluation
 
-* Multiple Model Comparison
-* LightGBM Support
-* Auto Frequency Detection
-* Additional Business Features
-* Model Persistence
-* API Deployment
-* MLOps Monitoring
+ForecastIQ evaluates forecasting performance using:
+
+* Mean Absolute Error (MAE)
+* Root Mean Squared Error (RMSE)
+
+These metrics help assess prediction quality and forecasting accuracy.
+
+---
+
+## Screenshots
+
+### Application Overview
+
+![Overview](screenshots/Screenshot%202026-06-09%20at%2011.12.30%E2%80%AFPM.png)
+
+### Dataset Overview
+
+![Dataset](screenshots/Screenshot%202026-06-09%20at%2011.12.41%E2%80%AFPM.png)
+
+### Forecast Configuration
+
+![Configuration](screenshots/Screenshot%202026-06-09%20at%2011.14.43%E2%80%AFPM.png)
+
+### Historical Trend Analysis
+
+![Historical](screenshots/Screenshot%202026-06-09%20at%2011.15.11%E2%80%AFPM.png)
+
+### Forecast Results
+
+![Forecast](screenshots/Screenshot%202026-06-09%20at%2011.22.10%E2%80%AFPM.png)
+
+---
+
+## Example Dataset
+
+The platform has been tested using the Walmart Sales Forecasting dataset containing:
+
+* 421,570 Rows
+* Historical Weekly Sales
+* Multiple Store Locations
+* Holiday Indicators
+
+---
+
+## Local Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Tree011/demand-forecasting-platform.git
+```
+
+Move into the project directory:
+
+```bash
+cd demand-forecasting-platform
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+streamlit run src/dashboard/upload_app.py
+```
+
+---
+
+## Docker
+
+Build the Docker image:
+
+```bash
+docker build -t forecastiq .
+```
+
+Run the container:
+
+```bash
+docker run -p 8501:8501 forecastiq
+```
+
+---
+
+## Deployment
+
+The application is containerised using Docker and deployed using Render.
+
+---
+
+## Future Improvements
+
+* Prophet Forecasting
+* LSTM Forecasting
+* Hyperparameter Optimisation
+* Automated Model Selection
+* Forecast Comparison Dashboard
+* REST API Integration
+* Authentication & User Management
+* Cloud Storage Integration
+
+---
+
+## Repository Structure
+
+```text
+demand-forecasting-platform/
+│
+├── src/
+│   ├── dashboard/
+│   ├── forecasting/
+│   ├── feature_engineering/
+│   └── training/
+│
+├── screenshots/
+│
+├── Dockerfile
+├── requirements.txt
+└── README.md
+```
 
 ---
 
 ## Author
 
-Avi Bhardwaj
+### Avi Bhardwaj
 
-ML Engineer
+Data Analyst | Machine Learning Engineer | Advanced Computer Science Graduate
+
+---
+
+## License
+
+This project is available for educational, portfolio and demonstration purposes.
